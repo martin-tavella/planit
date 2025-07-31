@@ -1,20 +1,20 @@
-"use client"
+"use client";
+
 //next and react imports
-import type React from "react"
-import { useState } from "react"
-import Link from "next/link"
+import type React from "react";
+import { useState } from "react";
+import Link from "next/link";
 
 //icons
-import { Eye, EyeOff, Mail, Lock, User, ArrowLeft } from "lucide-react"
+import { Eye, EyeOff, Mail, Lock, User, ArrowLeft } from "lucide-react";
 
 //button from UI library
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 //types
-import { FormData } from "./types/FormData"
-import { FormErrors } from "./types/FormErrors"
-
-
+import { FormData } from "./types/FormData";
+import { FormErrors } from "./types/FormErrors";
+import { validateForm } from "./validation";
 
 const Register = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -23,39 +23,52 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-  })
+  });
 
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
 
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({
         ...prev,
         [name]: undefined,
-      }))
+      }));
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
     setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
-  }
+      setIsLoading(false);
+    }, 2000);
+  };
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name } = e.target;
+    const validationErrors = validateForm(formData);
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: validationErrors[name as keyof typeof validationErrors],
+      }));
+    }
+  };
 
   const handleGoogleSignUp = () => {
-    console.log("Google sign up clicked")
-  }
+    console.log("Google sign up clicked");
+  };
 
   return (
     <main className="bg-gradient-to-br from-[#1d0c37] via-[#2a1548] to-[#1d0c37] min-h-screen flex items-center justify-center p-4">
@@ -73,8 +86,12 @@ const Register = () => {
         <div className="bg-white/10 backdrop-blur-sm border border-[#a98af7]/20 rounded-2xl p-8 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2">Create Account</h1>
-            <p className="text-[#c4b5fd] text-lg">Join Planit and start organizing your tasks</p>
+            <h1 className="text-4xl font-bold text-white mb-2">
+              Create Account
+            </h1>
+            <p className="text-[#c4b5fd] text-lg">
+              Join Planit and start organizing your tasks
+            </p>
           </div>
 
           {/* Google Sign Up Button */}
@@ -111,7 +128,9 @@ const Register = () => {
               <div className="w-full border-t border-[#a98af7]/30"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-transparent text-[#c4b5fd]">or register with email</span>
+              <span className="px-4 bg-transparent text-[#c4b5fd]">
+                or register with email
+              </span>
             </div>
           </div>
 
@@ -127,7 +146,10 @@ const Register = () => {
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-[#c4b5fd] text-sm font-medium mb-2">
+                <label
+                  htmlFor="firstName"
+                  className="block text-[#c4b5fd] text-sm font-medium mb-2"
+                >
                   First Name
                 </label>
                 <div className="relative">
@@ -138,6 +160,7 @@ const Register = () => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
                       errors.firstName
                         ? "border-red-500 focus:ring-red-500/50"
@@ -147,11 +170,18 @@ const Register = () => {
                     required
                   />
                 </div>
-                {errors.firstName && <p className="text-red-400 text-xs mt-1">{errors.firstName}</p>}
+                {errors.firstName && (
+                  <p className="text-red-400 text-xs mt-1">
+                    {errors.firstName}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-[#c4b5fd] text-sm font-medium mb-2">
+                <label
+                  htmlFor="lastName"
+                  className="block text-[#c4b5fd] text-sm font-medium mb-2"
+                >
                   Last Name
                 </label>
                 <div className="relative">
@@ -162,6 +192,7 @@ const Register = () => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
                       errors.lastName
                         ? "border-red-500 focus:ring-red-500/50"
@@ -171,13 +202,18 @@ const Register = () => {
                     required
                   />
                 </div>
-                {errors.lastName && <p className="text-red-400 text-xs mt-1">{errors.lastName}</p>}
+                {errors.lastName && (
+                  <p className="text-red-400 text-xs mt-1">{errors.lastName}</p>
+                )}
               </div>
             </div>
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-[#c4b5fd] text-sm font-medium mb-2">
+              <label
+                htmlFor="email"
+                className="block text-[#c4b5fd] text-sm font-medium mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -188,6 +224,7 @@ const Register = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
                     errors.email
                       ? "border-red-500 focus:ring-red-500/50"
@@ -197,12 +234,17 @@ const Register = () => {
                   required
                 />
               </div>
-              {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-red-400 text-xs mt-1">{errors.email}</p>
+              )}
             </div>
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-[#c4b5fd] text-sm font-medium mb-2">
+              <label
+                htmlFor="password"
+                className="block text-[#c4b5fd] text-sm font-medium mb-2"
+              >
                 Password
               </label>
               <div className="relative">
@@ -213,6 +255,7 @@ const Register = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   className={`w-full pl-10 pr-12 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
                     errors.password
                       ? "border-red-500 focus:ring-red-500/50"
@@ -226,15 +269,24 @@ const Register = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#a98af7] hover:text-[#c4b5fd] transition-colors duration-300"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
-              {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-red-400 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
 
             {/* Confirm Password Field */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-[#c4b5fd] text-sm font-medium mb-2">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-[#c4b5fd] text-sm font-medium mb-2"
+              >
                 Confirm Password
               </label>
               <div className="relative">
@@ -245,6 +297,7 @@ const Register = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   className={`w-full pl-10 pr-12 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
                     errors.confirmPassword
                       ? "border-red-500 focus:ring-red-500/50"
@@ -258,10 +311,18 @@ const Register = () => {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#a98af7] hover:text-[#c4b5fd] transition-colors duration-300"
                 >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
-              {errors.confirmPassword && <p className="text-red-400 text-xs mt-1">{errors.confirmPassword}</p>}
+              {errors.confirmPassword && (
+                <p className="text-red-400 text-xs mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
 
             {/* Submit Button */}
@@ -296,7 +357,7 @@ const Register = () => {
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
