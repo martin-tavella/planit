@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { FormData } from "./types/FormData";
 import { FormErrors } from "./types/FormErrors";
 import { validateForm } from "./validation";
+import { loginWithGoogle } from "@/services/authService";
 
 const Register = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -67,7 +68,7 @@ const Register = () => {
   };
 
   const handleGoogleSignUp = () => {
-    console.log("Google sign up clicked");
+    loginWithGoogle();
   };
 
   return (
@@ -99,7 +100,7 @@ const Register = () => {
             type="button"
             onClick={handleGoogleSignUp}
             variant="outline"
-            className="w-full mb-6 bg-white hover:bg-gray-50 text-gray-700 border-gray-300 font-medium py-3 transition-all duration-300"
+            className="w-full mb-6 bg-white hover:bg-gray-50 text-gray-700 border-gray-300 font-medium py-3 transition-all duration-300 cursor-pointer"
           >
             <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
               <path
