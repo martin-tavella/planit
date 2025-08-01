@@ -1,16 +1,28 @@
-import { FormData as RegisterFormData}from "@/components/Register/types/FormData";
 import { FormData as LoginFormData } from "@/components/Login/types/FormData";
 import api from "./api";
+import { AxiosError } from "axios";
 
-export const login = async ({ email, password }: LoginFormData) => {
+export const loginService = async ({ email, password }: LoginFormData) => {
+    try {
     const res = await api.post("/auth/login", { email, password});
-    localStorage.setItem("token", res.data.access_token);
-    return res.data;
+     return res.data;
+    } catch (error: unknown) {
+        if (error instanceof AxiosError) {
+            return error.response?.data || { error: "An unexpected error occurred" };
+        }
+        return { error: "An unexpected error occurred" };
+    }
 }
 
-export const register = async (data: RegisterFormData) => {
+interface RegisterFormData {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
+export const registerService = async (data: RegisterFormData) => {
     const res = await api.post("/auth/register", data);
-    localStorage.setItem("token", res.data.access_token);
     return res.data;
 }
 
@@ -21,9 +33,4 @@ export const loginWithGoogle = () => {
 export const handleGoogleCallback = async (code: string) => {
     const res = await api.get(`/auth/google/redirect?code=${code}`);
     return res.data;
-}
-
-export const logout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/";
 }

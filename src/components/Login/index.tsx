@@ -6,7 +6,8 @@ import { useState } from "react";
 import { FormData } from "./types/FormData";
 import { FormErrors } from "./types/FormErrors";
 import { validateForm } from "./validate";
-import { loginWithGoogle } from "@/services/authService";
+import { loginService, loginWithGoogle } from "@/services/authService";
+import { useAuth } from "@/context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -16,6 +17,7 @@ const Login = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,19 +27,38 @@ const Login = () => {
     }));
 
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
+      const updatedErrors = { ...errors };
+      delete updatedErrors[name as keyof FormErrors];
+      setErrors(updatedErrors);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
+    if (errors.email || errors.password) {
       setIsLoading(false);
-    }, 2000);
+      setErrors((prev) => ({
+        ...prev,
+        general: "Please fix the errors before submitting.",
+      }));
+      return;
+    }
+    setErrors({});
+    const res = await loginService(formData);
+    if (res.error) {
+      setIsLoading(false);
+      setErrors((prev) => ({
+        ...prev,
+        general: res.message,
+      }));
+    } else {
+      setIsLoading(false);
+      setFormData({ email: "", password: "" });
+      setErrors({});
+      login(res.access_token);
+      window.location.href = "/dashboard";
+    }
   };
 
   const handleBlur = (
@@ -113,6 +134,11 @@ const Login = () => {
           </div>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {errors.general && (
+            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+              <p className="text-red-400 text-sm">{errors.general}</p>
+            </div>
+          )}
           <div>
             <label
               htmlFor="email"
@@ -197,17 +223,17 @@ const Login = () => {
             )}
           </Button>
         </form>
-         <div className="text-center mt-6">
-            <p className="text-[#c4b5fd]">
-              {"You don't have an account? "}
-              <Link
-                href="/register"
-                className="text-[#a98af7] hover:text-[#c4b5fd] font-medium transition-colors duration-300"
-              >
-                Register here
-              </Link>
-            </p>
-          </div>
+        <div className="text-center mt-6">
+          <p className="text-[#c4b5fd]">
+            {"You don't have an account? "}
+            <Link
+              href="/register"
+              className="text-[#a98af7] hover:text-[#c4b5fd] font-medium transition-colors duration-300"
+            >
+              Register here
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );

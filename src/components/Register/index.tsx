@@ -15,7 +15,8 @@ import { Button } from "@/components/ui/button";
 import { FormData } from "./types/FormData";
 import { FormErrors } from "./types/FormErrors";
 import { validateForm } from "./validation";
-import { loginWithGoogle } from "@/services/authService";
+import { loginWithGoogle, registerService } from "@/services/authService";
+import { useAuth } from "@/context/AuthContext";
 
 const Register = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -25,11 +26,11 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -39,19 +40,51 @@ const Register = () => {
     }));
 
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
+      const updatedErrors = { ...errors };
+      delete updatedErrors[name as keyof FormErrors];
+      setErrors(updatedErrors);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors((prev) => ({ ...prev, general: undefined }));
     setIsLoading(true);
-    setTimeout(() => {
+    if (Object.keys(errors).length > 0) {
       setIsLoading(false);
-    }, 2000);
+      setErrors((prev) => ({
+        ...prev,
+        general: "Please fix the errors before submitting.",
+      }));
+      return;
+    }
+    setErrors({});
+    const res = await registerService({
+      name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+    });
+    console.log(res)
+    if (res.error) {
+      setIsLoading(false);
+      setErrors((prev) => ({
+        ...prev,
+        general: res.error,
+      }));
+    } else {
+      setIsLoading(false);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      setErrors({});
+      login(res.access_token);
+      window.location.href = "/dashboard";
+    }
   };
 
   const handleBlur = (
