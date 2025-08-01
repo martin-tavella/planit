@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import logo from "../../../../public/img/logo/planit-only.png"
@@ -16,21 +16,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useAuth } from "@/context/AuthContext"
 
-const useAuth = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState({
-    name: "Juan Pérez",
-    email: "juan@example.com",
-    avatar: "/placeholder.svg?height=32&width=32",
-  })
-
-  return { isLoggedIn, user, setIsLoggedIn }
-}
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { isLoggedIn, user, setIsLoggedIn } = useAuth()
+  const { user, logout } = useAuth()
+  const [ isLoggedIn, setIsLoggedIn ] = useState<boolean>(false)
+
+  useEffect(() => {
+    setIsLoggedIn(!!user)
+  }, [user])
+
 
   const navItems = [
     { route: "/", label: "Home" },
@@ -39,11 +36,8 @@ const Navbar: React.FC = () => {
   ]
 
   const handleLogout = () => {
+    logout();
     setIsLoggedIn(false)
-  }
-
-  const toggleAuth = () => {
-    setIsLoggedIn(!isLoggedIn)
   }
 
   return (
@@ -93,7 +87,10 @@ const Navbar: React.FC = () => {
                       <div className="w-10 h-10 rounded-full bg-[#a98af7] flex items-center justify-center">
                         <User className="w-10 h-10 text-[#1d0c37]" />
                       </div>
-                      <span className="font-medium text-lg">{user.name}</span>
+                      <span className="font-medium text-lg">
+                        {/* {user.name} */}
+                        Usuario
+                        </span>
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -112,7 +109,7 @@ const Navbar: React.FC = () => {
               ) : (
                 <div className="flex items-center gap-3">
                   <Button
-                    onClick={toggleAuth}
+                    onClick={() => window.location.href = "/login"}
                     variant="ghost"
                     className="text-[#a98af7] hover:text-[#c4b5fd] hover:bg-[#2a1548] transition-all duration-300"
                   >
@@ -120,7 +117,7 @@ const Navbar: React.FC = () => {
                     Login
                   </Button>
                   <Button
-                    onClick={toggleAuth}
+                    onClick={() => window.location.href = "/register"}
                     className="bg-[#a98af7] text-[#1d0c37] hover:bg-[#c4b5fd] transition-all duration-300 font-medium"
                   >
                     <UserPlus className="w-4 h-4 mr-2" />
@@ -161,8 +158,11 @@ const Navbar: React.FC = () => {
                             <User className="w-5 h-5 text-[#1d0c37]" />
                           </div>
                           <div>
-                            <p className="text-[#a98af7] font-medium">{user.name}</p>
-                            <p className="text-[#a98af7]/70 text-sm">{user.email}</p>
+                            <p className="text-[#a98af7] font-medium">
+                              {/* {user.name} */}
+                              Usuario
+                              </p>
+                            <p className="text-[#a98af7]/70 text-sm">{user?.email}</p>
                           </div>
                         </div>
                         <Button
@@ -176,14 +176,14 @@ const Navbar: React.FC = () => {
                     ) : (
                       <div className="flex flex-col gap-3 mx-4">
                         <Button
-                          onClick={toggleAuth}
+                          onClick={() => window.location.href = "/login"}
                           variant="outline"
                           className="border-[#a98af7] text-[#a98af7] hover:bg-[#a98af7] hover:text-[#1d0c37] bg-transparent"
                         >
                           <LogIn className="w-4 h-4 mr-2" />
                           Login
                         </Button>
-                        <Button onClick={toggleAuth} className="bg-[#a98af7] text-[#1d0c37] hover:bg-[#c4b5fd]">
+                        <Button onClick={() => window.location.href = "/register"} className="bg-[#a98af7] text-[#1d0c37] hover:bg-[#c4b5fd]">
                           <UserPlus className="w-4 h-4 mr-2" />
                           Sign Up
                         </Button>

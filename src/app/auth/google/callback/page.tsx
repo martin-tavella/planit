@@ -1,7 +1,8 @@
 "use client";
 
+import GoogleAuthLoading from "@/components/GoogleAuthLoading";
 import { useAuth } from "@/context/AuthContext";
-import { handleGoogleCallback } from "@/services/authService";
+// import { handleGoogleCallback } from "@/services/authService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -12,19 +13,14 @@ export default function GoogleCallbackPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const code = searchParams.get("code");
-      if (!code) return router.push("/login");
-
-      try {
-        const res = await handleGoogleCallback(code);
-        login(res.access_token);
-        router.push("/dashboard");
-      } catch (error) {
-        console.error(error);
-      }
+      const token = searchParams.get("token");
+      if (!token) return router.push("/login");
+      login(token);
+      router.push("/dashboard");
     };
     fetchData();
-  }, [searchParams, router, login]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  return <p>Autenticando con Google...</p>
+  return <GoogleAuthLoading />;
 }
