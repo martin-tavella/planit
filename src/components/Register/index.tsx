@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { FormData } from "./types/FormData";
 import { FormErrors } from "./types/FormErrors";
 import { validateForm } from "./validation";
-import { loginWithGoogle, registerService } from "@/services/authService";
+import { loginWithGoogle, registerService } from "@/services/auth.service";
 import { useAuth } from "@/context/AuthContext";
 
 const Register = () => {

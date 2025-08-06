@@ -6,7 +6,7 @@ import { useState } from "react";
 import { FormData } from "./types/FormData";
 import { FormErrors } from "./types/FormErrors";
 import { validateForm } from "./validate";
-import { loginService, loginWithGoogle } from "@/services/authService";
+import { loginService, loginWithGoogle } from "@/services/auth.service";
 import { useAuth } from "@/context/AuthContext";
 
 const Login = () => {
