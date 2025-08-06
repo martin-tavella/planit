@@ -1,17 +1,27 @@
-"use client"
+"use client";
 
-import { useAuth } from "@/context/AuthContext"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import Layout from "./layout";
 
-const Page = () => {
-    const { token } = useAuth() 
-    const router = useRouter()
+const DashboardPage = () => {
+  const router = useRouter();
 
-    useEffect(()=>{
-        if (!token) router.push('/login')
-    })
-    return <p>cricri</p>
-}
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+        console.log('no puedes pasar mijo')
+      router.push("/login");
+    } else {
+        console.log('puedes pasar mijo')
+    }
+  }, [router]);
+  
+  return (
+    <>
+        <p>ACA VAN LAS TAREAS</p>
+    </>
+  );
+};
 
-export default Page
+export default DashboardPage;
