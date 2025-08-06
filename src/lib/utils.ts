@@ -9,6 +9,8 @@ export function cn(...inputs: ClassValue[]) {
 export interface JwtPayload {
   userId: number;
   email: string;
+  name: string;
+  picture: string;
   iat: number;
   exp: number;
 }
