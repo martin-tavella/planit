@@ -67,16 +67,10 @@ export default function DashboardActions() {
       icon: <Target className="w-5 h-5" />,
     },
     {
-      label: "Hours Worked",
-      value: "6.5",
-      icon: <Clock className="w-5 h-5" />,
-    },
-    {
       label: "Productivity",
       value: "85%",
       icon: <TrendingUp className="w-5 h-5" />,
     },
-    { label: "Team Members", value: "12", icon: <Users className="w-5 h-5" /> },
   ];
 
   return (
@@ -104,9 +98,8 @@ export default function DashboardActions() {
         style={{ animationDelay: "2s" }}
       />
 
-      <div className="relative z-10 space-y-8">
         {/* Welcome Section */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 text-center">
+        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 py-8 px-30 xl:px-68 text-center">
           <div>
             <h1 className="text-5xl font-semibold bg-gradient-to-r from-[#1d0c37] to-[#a98af7] bg-clip-text text-transparent mb-4 pt-3 pb-2">
               {getGreeting()}, {user?.name || "User"}!
@@ -118,7 +111,7 @@ export default function DashboardActions() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+        {/* <div className="flex flex-row justify-center gap-20 mx-auto max-w-2/3 border-2 mr-25 border-violet-300 rounded-lg">
           {stats.map((stat, index) => (
             <div
               key={index}
@@ -133,8 +126,7 @@ export default function DashboardActions() {
               <div className="text-sm text-gray-600">{stat.label}</div>
             </div>
           ))}
-        </div>
-      </div>
+        </div> */}
 
       {/* Quick Actions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-3">
@@ -143,7 +135,7 @@ export default function DashboardActions() {
             <Button
               variant="ghost"
               className={`
-                  w-full h-48 p-8 rounded-2xl shadow-xl border-0
+                  w-full h-48 xl:h-70  p-8 rounded-2xl shadow-xl border-0
                   bg-gradient-to-br ${action.gradient} ${action.hoverGradient}
                   text-white transition-all duration-300 transform hover:scale-105
                   hover:shadow-2xl group relative overflow-hidden
