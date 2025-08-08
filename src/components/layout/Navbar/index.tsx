@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-8">
             <ul className="flex gap-8">
               {navItems.map((item, index) => (
                 <li key={index}>
@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button

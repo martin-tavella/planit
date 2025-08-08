@@ -5,7 +5,7 @@ import logo from "../../../../public/img/logo/planit-only.png";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar, CheckSquare, Home, LayoutDashboard, LogOut, Menu, Plus, Settings, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -57,6 +57,15 @@ const Sidebar = () => {
     }
   ]
 
+  useEffect(()=> {
+    if (window.innerWidth > 1280) {
+      setIsCollapsed(false)
+    } else {
+      setIsCollapsed(true)
+    }
+  }, [])
+
+
   const handleLogout = () => {
     logout()
     setIsMobileOpen(false)
@@ -81,22 +90,14 @@ const Sidebar = () => {
         <Menu className="w-5 h-5" />
       </Button> */}
 
-      {/* Mobile Overlay */}
-      {isMobileOpen && (
-        <div 
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
-          onClick={closeMobile}
-        />
-      )}
-
       {/* Sidebar */}
       <aside className={`
-        absolute inset-y-0 left-0 z-50
+        fixed inset-y-0 left-0 top-24  z-50
         bg-gradient-to-b from-[#1d0c37] to-[#2a1548] 
         border-r border-[#a98af7]/20
         transition-all duration-300 ease-in-out
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        ${isCollapsed ? 'lg:w-20' : 'lg:w-72'}
+        ${isCollapsed ? 'lg:w-30' : 'lg:w-72'}
         w-72 h-screen
         shadow-2xl
       `}>
@@ -106,10 +107,9 @@ const Sidebar = () => {
           <div className="flex items-center justify-between">
             <Link 
               href="/" 
-              className="flex items-center gap-3 group"
+              className="flex mx-auto xl:hidden items-center gap-3 group"
               onClick={closeMobile}
             >
-              <div className="relative">
                 <Image
                   src={logo.src}
                   alt="Planit logo"
@@ -117,32 +117,20 @@ const Sidebar = () => {
                   height={48}
                   className="transition-transform duration-300 group-hover:scale-110"
                 />
-              </div>
-              {!isCollapsed && (
-                <span className="text-[#a98af7] text-2xl font-bold tracking-tight group-hover:text-[#c4b5fd] transition-colors duration-300">
-                  Planit
-                </span>
-              )}
             </Link>
 
-            {/* Close button for mobile */}
-            <Button
-              onClick={closeMobile}
-              className="lg:hidden text-[#a98af7] hover:text-[#c4b5fd] hover:bg-[#2a1548] p-1"
-              variant="ghost"
-              size="icon"
-            >
-              <X className="w-5 h-5" />
-            </Button>
 
             {/* Collapse button for desktop */}
             <Button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="hidden lg:flex text-[#a98af7] hover:text-[#c4b5fd] hover:bg-[#2a1548] p-1"
+              className={`hidden xl:flex text-[#a98af7] hover:text-[#c4b5fd] hover:bg-[#2a1548] p-1
+                ${isCollapsed ? 'mx-auto': 'ml-5'}
+                
+                `}
               variant="ghost"
               size="icon"
             >
-              <Menu className="w-4 h-4" />
+              <Menu className="w-5 h-5" />
             </Button>
           </div>
         </div>
@@ -181,7 +169,7 @@ const Sidebar = () => {
                       </span>
                     )}
 
-                    {isActive && (
+                    {isActive && !isCollapsed && (
                       <div className="absolute right-2 w-2 h-2 bg-[#1d0c37] rounded-full" />
                     )}
 
