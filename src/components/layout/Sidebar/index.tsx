@@ -72,14 +72,14 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Button
       <Button
         onClick={toggleMobile}
-        className="lg:hidden fixed top-4 left-4 z-50 bg-[#a98af7] hover:bg-[#c4b5fd] text-[#1d0c37] p-2"
+        className="md:hidden fixed top-4 left-4 z-50 bg-[#a98af7] hover:bg-[#c4b5fd] text-[#1d0c37] p-2"
         size="icon"
       >
         <Menu className="w-5 h-5" />
-      </Button>
+      </Button> */}
 
       {/* Mobile Overlay */}
       {isMobileOpen && (
@@ -91,13 +91,13 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50
+        absolute inset-y-0 left-0 z-50
         bg-gradient-to-b from-[#1d0c37] to-[#2a1548] 
         border-r border-[#a98af7]/20
         transition-all duration-300 ease-in-out
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         ${isCollapsed ? 'lg:w-20' : 'lg:w-72'}
-        w-72 h-full
+        w-72 h-screen
         shadow-2xl
       `}>
         
@@ -241,7 +241,7 @@ const Sidebar = () => {
       </aside>
 
       {/* Content Spacer for Desktop */}
-      <div className={`hidden lg:block transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-72'}`} />
+      {/* <div className={`hidden lg:block transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-72'}`} /> */}
     </>
   )
 }

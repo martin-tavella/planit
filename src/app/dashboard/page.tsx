@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Layout from "./layout";
+import DashboardActions from "@/components/dashboard";
 
 const DashboardPage = () => {
   const router = useRouter();
@@ -19,7 +19,7 @@ const DashboardPage = () => {
   
   return (
     <>
-        <p>ACA VAN LAS TAREAS</p>
+        <DashboardActions />
     </>
   );
 };

@@ -1,27 +1,34 @@
-"use client"
+"use client";
 
-import { useAuth } from "@/context/AuthContext"
-import { User, Bell, Search } from 'lucide-react'
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import { useAuth } from "@/context/AuthContext";
+import { User, Bell, Search, ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const DashboardNavbar = () => {
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   const getGreeting = () => {
-    const hour = new Date().getHours()
-    if (hour < 12) return "Good morning"
-    if (hour < 18) return "Good afternoon"
-    return "Good evening"
-  }
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
 
   return (
     <header className="bg-gradient-to-r from-[#1d0c37] to-[#2a1548] border-b border-[#a98af7]/20 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-end lg:justify-between h-16">
-          
+        <div className="flex items-center justify-between h-16">
+            <Link
+              href="/"
+              className="lg:hidden text-[#a98af7] hover:text-[#c4b5fd] transition-colors duration-300 ml-3"
+            >
+              <ArrowLeft className="w-7 h-7" />
+            </Link>
+
           {/* Greeting Section */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             <div>
               <h1 className="text-xl font-semibold text-white">
                 {getGreeting()}, {user?.name || "User"}! 👋
@@ -34,7 +41,6 @@ const DashboardNavbar = () => {
 
           {/* Right Section */}
           <div className="flex items-center space-x-4">
-            
             {/* Search Button */}
             <Button
               variant="ghost"
@@ -52,7 +58,7 @@ const DashboardNavbar = () => {
             >
               <Bell className="w-5 h-5" />
               {/* Notification dot */}
-              {/* <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[#1d0c37]"></div> */}
+            {/* <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[#1d0c37]"></div> */}
             {/* </Button> */}
 
             {/* User Profile */}
@@ -74,7 +80,7 @@ const DashboardNavbar = () => {
                 {/* Online status indicator */}
                 <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-[#1d0c37]"></div>
               </div>
-              
+
               {/* User info - hidden on mobile */}
               <div className="hidden sm:block">
                 <p className="text-sm font-medium text-white">
@@ -89,7 +95,7 @@ const DashboardNavbar = () => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default DashboardNavbar
+export default DashboardNavbar;
