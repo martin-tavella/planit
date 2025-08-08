@@ -1,44 +1,42 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useEffect, useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import logo from "../../../../public/img/logo/planit-only.png"
-import { Menu, User, LogIn, UserPlus, ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import logo from "../../../../public/img/logo/planit-only.png";
+import { Menu, User, LogIn, UserPlus, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useAuth } from "@/context/AuthContext"
-
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useAuth } from "@/context/AuthContext";
 
 const Navbar: React.FC = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { user, logout } = useAuth()
-  const [ isLoggedIn, setIsLoggedIn ] = useState<boolean>(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsLoggedIn(!!user)
-  }, [user])
-
+    setIsLoggedIn(!!user);
+  }, [user]);
 
   const navItems = [
     { route: "/", label: "Home" },
     { route: "/dashboard", label: "My Dashboard" },
     { route: "/about", label: "About" },
-  ]
+  ];
 
   const handleLogout = () => {
     logout();
-    setIsLoggedIn(false)
-  }
+    setIsLoggedIn(false);
+  };
 
   return (
     <nav className="relative bg-gradient-to-r from-[#1d0c37] to-[#2a1548] shadow-lg">
@@ -85,23 +83,32 @@ const Navbar: React.FC = () => {
                       className="flex items-center gap-3 text-[#a98af7] hover:text-[#c4b5fd] hover:bg-[#2a1548] transition-all duration-300"
                     >
                       <div className="w-10 h-10 rounded-full bg-[#a98af7] flex items-center justify-center">
-                        <User className="w-10 h-10 text-[#1d0c37]" />
+                        {user?.picture ? (
+                          <Image src={user.picture} alt={user.name} width={37} height={37} className="rounded-full"/>
+                        ) : (
+                          <User className="w-10 h-10 text-[#1d0c37]" />
+                        )}
                       </div>
-                      <span className="font-medium text-lg">
-                        {/* {user.name} */}
-                        Usuario
-                        </span>
+                      <span className="font-medium text-lg">{user?.name}</span>
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 bg-[#1d0c37] border-[#a98af7] text-[#a98af7]">
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-56 bg-[#1d0c37] border-[#a98af7] text-[#a98af7]"
+                  >
                     <DropdownMenuItem className="hover:bg-[#2a1548] hover:text-[#c4b5fd]">
                       <User className="w-4 h-4 mr-2" />
                       Profile
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="hover:bg-[#2a1548] hover:text-[#c4b5fd]">Settings</DropdownMenuItem>
+                    <DropdownMenuItem className="hover:bg-[#2a1548] hover:text-[#c4b5fd]">
+                      Settings
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-[#a98af7]/20" />
-                    <DropdownMenuItem onClick={handleLogout} className="hover:bg-[#2a1548] hover:text-[#c4b5fd]">
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="hover:bg-[#2a1548] hover:text-[#c4b5fd]"
+                    >
                       Logout
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -109,7 +116,7 @@ const Navbar: React.FC = () => {
               ) : (
                 <div className="flex items-center gap-3">
                   <Button
-                    onClick={() => window.location.href = "/login"}
+                    onClick={() => (window.location.href = "/login")}
                     variant="ghost"
                     className="text-[#a98af7] hover:text-[#c4b5fd] hover:bg-[#2a1548] transition-all duration-300"
                   >
@@ -117,7 +124,7 @@ const Navbar: React.FC = () => {
                     Login
                   </Button>
                   <Button
-                    onClick={() => window.location.href = "/register"}
+                    onClick={() => (window.location.href = "/register")}
                     className="bg-[#a98af7] text-[#1d0c37] hover:bg-[#c4b5fd] transition-all duration-300 font-medium"
                   >
                     <UserPlus className="w-4 h-4 mr-2" />
@@ -131,11 +138,18 @@ const Navbar: React.FC = () => {
           <div className="md:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-[#a98af7] hover:text-[#c4b5fd] hover:bg-[#2a1548]">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-[#a98af7] hover:text-[#c4b5fd] hover:bg-[#2a1548]"
+                >
                   <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-[#1d0c37] border-l-[#a98af7] w-80 [&>button]:text-[#a98af7] [&>button]:hover:text-[#c4b5fd] [&>button]:w-8 [&>button]:h-8">
+              <SheetContent
+                side="right"
+                className="bg-[#1d0c37] border-l-[#a98af7] w-80 [&>button]:text-[#a98af7] [&>button]:hover:text-[#c4b5fd] [&>button]:w-8 [&>button]:h-8"
+              >
                 <div className="flex flex-col gap-6 mt-8">
                   <div className="flex flex-col gap-4 ml-6">
                     {navItems.map((item, index) => (
@@ -155,14 +169,19 @@ const Navbar: React.FC = () => {
                       <div className="flex flex-col gap-4 mx-4">
                         <div className="flex items-center gap-3 p-3 rounded-lg bg-[#2a1548]">
                           <div className="w-10 h-10 rounded-full bg-[#a98af7] flex items-center justify-center">
-                            <User className="w-5 h-5 text-[#1d0c37]" />
+                            {user?.picture ? (
+                          <Image src={user.picture} alt={user.name} width={37} height={37} className="rounded-full"/>
+                        ) : (
+                          <User className="w-10 h-10 text-[#1d0c37]" />
+                        )}
                           </div>
                           <div>
                             <p className="text-[#a98af7] font-medium">
-                              {/* {user.name} */}
-                              Usuario
-                              </p>
-                            <p className="text-[#a98af7]/70 text-sm">{user?.email}</p>
+                              {user?.name}
+                            </p>
+                            <p className="text-[#a98af7]/70 text-sm">
+                              {user?.email}
+                            </p>
                           </div>
                         </div>
                         <Button
@@ -176,14 +195,17 @@ const Navbar: React.FC = () => {
                     ) : (
                       <div className="flex flex-col gap-3 mx-4">
                         <Button
-                          onClick={() => window.location.href = "/login"}
+                          onClick={() => (window.location.href = "/login")}
                           variant="outline"
                           className="border-[#a98af7] text-[#a98af7] hover:bg-[#a98af7] hover:text-[#1d0c37] bg-transparent"
                         >
                           <LogIn className="w-4 h-4 mr-2" />
                           Login
                         </Button>
-                        <Button onClick={() => window.location.href = "/register"} className="bg-[#a98af7] text-[#1d0c37] hover:bg-[#c4b5fd]">
+                        <Button
+                          onClick={() => (window.location.href = "/register")}
+                          className="bg-[#a98af7] text-[#1d0c37] hover:bg-[#c4b5fd]"
+                        >
                           <UserPlus className="w-4 h-4 mr-2" />
                           Sign Up
                         </Button>
@@ -197,7 +219,7 @@ const Navbar: React.FC = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

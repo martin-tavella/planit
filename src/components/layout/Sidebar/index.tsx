@@ -181,17 +181,13 @@ const Sidebar = () => {
                       </span>
                     )}
 
-                    {/* Active indicator */}
                     {isActive && (
                       <div className="absolute right-2 w-2 h-2 bg-[#1d0c37] rounded-full" />
                     )}
 
-                    {/* Tooltip for collapsed state */}
-                    {isCollapsed && (
                       <div className="absolute left-full ml-2 px-2 py-1 bg-[#1d0c37] text-[#a98af7] text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-50 border border-[#a98af7]/20">
                         {item.label}
                       </div>
-                    )}
                   </Link>
                 </li>
               )
