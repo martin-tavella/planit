@@ -99,7 +99,7 @@ export default function DashboardActions() {
       />
 
         {/* Welcome Section */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 py-8 px-30 xl:px-68 text-center">
+        <div className=" backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 py-8 px-30 xl:px-68 text-center">
           <div>
             <h1 className="text-5xl font-semibold bg-gradient-to-r from-[#1d0c37] to-[#a98af7] bg-clip-text text-transparent mb-4 pt-3 pb-2">
               {getGreeting()}, {user?.name || "User"}!
@@ -141,17 +141,6 @@ export default function DashboardActions() {
                   hover:shadow-2xl group relative overflow-hidden
                 `}
             >
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    backgroundImage: `radial-gradient(circle at 20% 80%, white 1px, transparent 1px),
-                                     radial-gradient(circle at 80% 20%, white 1px, transparent 1px)`,
-                    backgroundSize: "30px 30px",
-                  }}
-                />
-              </div>
 
               {/* Content */}
               <div className="relative z-10 flex flex-col items-center justify-center space-y-4 h-full">

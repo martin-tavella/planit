@@ -72,7 +72,7 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     fetchTasks()
-  })
+  }, [])
 
   return (
     <TasksContext.Provider value={{ tasks, loading, error, fetchTasks, createTask, updateTask, deleteTask }}>
