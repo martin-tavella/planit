@@ -1,8 +1,15 @@
 "use client";
 
 import { createTaskService, deleteTaskService, getTasksService, updateTaskService } from "@/services/task.service";
-import { Task } from "@/types/task";
+import { Task, TaskPriority } from "@/types/task";
 import { createContext, useContext, useEffect, useState } from "react";
+
+interface CreateTaskData {
+    title: string;
+    description?: string;
+    priority: TaskPriority;
+    deadline?: string;
+}
 
 interface TasksContextType {
   tasks: Task[];
@@ -41,10 +48,10 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const createTask = async (
-    taskData: Omit<Task, "id" | "createdAt" | "updatedAt" | "userId">
+    taskData: CreateTaskData
   ) => {
     try {
-      const newTask = await createTaskService(taskData);
+      const newTask = await createTaskService({...taskData});
       
       setTasks((prev) => [...prev, newTask])
     } catch {
