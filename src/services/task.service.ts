@@ -9,8 +9,8 @@ export const getTasksService = async (): Promise<Task[]> => {
 export const createTaskService = async (
   taskData: Omit<Task, "id" | "createdAt" | "updatedAt" | "userId" | "status">
 ): Promise<Task> => {
-  console.log(taskData);
   const res = await api.post('/tasks/create', taskData);
+  console.log(res);
   return res.data;
 };
 

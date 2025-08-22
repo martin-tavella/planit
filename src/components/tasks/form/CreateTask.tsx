@@ -17,8 +17,6 @@ const CreateTaskForm = () => {
         });
     const [errors, setErrors] = useState<ErrorsType>({} as ErrorsType);
     const [isLoading, setIsLoading] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
     const { createTask, error} = useTasks();
         
         const handleInputChange = (
@@ -50,8 +48,12 @@ const CreateTaskForm = () => {
               return;
             }
             setErrors({});
+            const updatedForm = { ...formData };
+            if (updatedForm.deadline === "") {
+              updatedForm.deadline = undefined; // Set to undefined if no deadline is provided
+            }
             await createTask({
-              ...formData
+              ...updatedForm
             });
             if (error) {
               setIsLoading(false);
@@ -89,8 +91,8 @@ const CreateTaskForm = () => {
       <div className="w-full max-w-md mt-10">
         {/* Back button */}
         <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-[#a98af7] hover:text-[#c4b5fd] transition-colors duration-300 mb-6"
+          href="/dashboard"
+          className="flex items-center justify-center gap-2 text-[#ebe4ff] hover:text-[#2c2449] transition-colors duration-300 mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Dashboard
@@ -130,8 +132,8 @@ const CreateTaskForm = () => {
                 <div className="relative">
                   <input
                     type="text"
-                    id="titlte"
-                    name="titlte"
+                    id="title"
+                    name="title"
                     value={formData.title}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
@@ -229,7 +231,6 @@ const CreateTaskForm = () => {
                     ? "border-red-500 focus:ring-red-500/50"
                     : "border-[#a98af7]/30 focus:border-[#a98af7] focus:ring-[#a98af7]/50"
                 }`}
-                required
               />
               {errors.deadline && (
                 <p className="text-red-400 text-xs mt-1">{errors.deadline}</p>
