@@ -6,16 +6,17 @@ import { User, Bell, Search, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const DashboardNavbar = () => {
-  const { user } = useAuth();
+  const { user, checkTokenExpiration } = useAuth();
 
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good morning";
-    if (hour < 18) return "Good afternoon";
-    return "Good evening";
-  };
+  useEffect(() => {
+    checkTokenExpiration();
+    if (!user) {
+      window.location.href = "/login";
+    }
+  }, [checkTokenExpiration]);
 
   return (
     <header className="fixed min-w-full z-40 bg-gradient-to-r from-[#1d0c37] to-[#2a1548] border-b border-[#a98af7]/20 shadow-lg">

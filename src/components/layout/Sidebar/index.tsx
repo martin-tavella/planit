@@ -58,21 +58,13 @@ const Sidebar = () => {
   ]
 
   useEffect(()=> {
-    if (window.innerWidth > 1280) {
-      setIsCollapsed(false)
-    } else {
       setIsCollapsed(true)
-    }
   }, [])
 
 
   const handleLogout = () => {
     logout()
     setIsMobileOpen(false)
-  }
-
-  const toggleMobile = () => {
-    setIsMobileOpen(!isMobileOpen)
   }
 
   const closeMobile = () => {

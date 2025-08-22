@@ -20,10 +20,14 @@ import { useAuth } from "@/context/AuthContext";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, checkTokenExpiration} = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
+    checkTokenExpiration();
+    if (!user) {
+      return
+    }
     setIsLoggedIn(!!user);
   }, [user]);
 

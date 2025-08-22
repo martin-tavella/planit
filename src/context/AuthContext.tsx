@@ -8,6 +8,7 @@ interface AuthContextType {
     token: string | null;
     login: (token: string) => void;
     logout: () => void;
+    checkTokenExpiration: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,6 +24,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const decodedUser = decodeToken(storedToken);
             setUser(decodedUser);
         }
+        checkTokenExpiration();
     }, [])
 
     const login = (token: string) => {
@@ -39,8 +41,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         window.location.href = "/";
     }
 
+    const checkTokenExpiration = () => {
+        if (token && user) {
+            if (user.exp < new Date().getTime() / 1000) {
+                logout();
+            }
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ user, token, login, logout }}>
+        <AuthContext.Provider value={{ user, token, login, logout, checkTokenExpiration }}>
             {children}
         </AuthContext.Provider>
     )

@@ -78,6 +78,7 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   useEffect(() => {
+    setError(null)
     fetchTasks()
   }, [])
 

@@ -37,23 +37,29 @@ const CreateTaskForm = () => {
         
           const handleSubmit = async (e: React.FormEvent) => {
             e.preventDefault();
-            setErrors((prev) => ({ ...prev, general: undefined }));
-            setIsLoading(true);
-            if (Object.keys(errors).length > 0) {
+            
+            const validationErrors = validateForm(formData);
+ 
+            const { general, ...updatedErrors } = validationErrors;
+            setErrors(updatedErrors);
+
+            if (Object.keys(updatedErrors).length > 0) {
               setIsLoading(false);
               setErrors((prev) => ({
-                ...prev,
+                ...updatedErrors,
                 general: "Please fix the errors before submitting.",
               }));
               return;
             }
+
+            setIsLoading(true);
             setErrors({});
             const updatedForm = { ...formData };
             if (updatedForm.deadline === "") {
-              updatedForm.deadline = undefined; // Set to undefined if no deadline is provided
+              updatedForm.deadline = undefined;
             }
             await createTask({
-              ...updatedForm
+              ...updatedForm,
             });
             if (error) {
               setIsLoading(false);
@@ -67,7 +73,7 @@ const CreateTaskForm = () => {
                 title: "",
                 description: "",
                 deadline: "",
-                priority: "" as Task['priority'],
+                priority: "" as Task["priority"],
               });
               setErrors({});
             }
