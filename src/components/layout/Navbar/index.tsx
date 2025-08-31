@@ -24,12 +24,11 @@ const Navbar: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    checkTokenExpiration();
-    if (!user) {
-      return
+    const isExpirated: boolean = checkTokenExpiration();
+    if (isExpirated) {
+      window.location.href = "/login";
     }
-    setIsLoggedIn(!!user);
-  }, [user]);
+  }, [checkTokenExpiration]);
 
   const navItems = [
     { route: "/", label: "Home" },

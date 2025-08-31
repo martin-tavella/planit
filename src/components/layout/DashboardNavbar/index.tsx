@@ -12,8 +12,8 @@ const DashboardNavbar = () => {
   const { user, checkTokenExpiration } = useAuth();
 
   useEffect(() => {
-    checkTokenExpiration();
-    if (!user) {
+    const isExpirated: boolean = checkTokenExpiration();
+    if (isExpirated) {
       window.location.href = "/login";
     }
   }, [checkTokenExpiration]);
