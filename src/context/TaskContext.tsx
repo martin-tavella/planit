@@ -17,7 +17,7 @@ interface TasksContextType {
   error: string | null;
   fetchTasks: () => Promise<void>;
   createTask: (
-    task: Omit<Task, "id" | "createdAt" | "updatedAt" | "userId">
+     taskData: CreateTaskData
   ) => Promise<void>;
   updateTask: (id: number, updatedData: Partial<Task>) => Promise<void>;
   deleteTask: (id: number) => Promise<void>;

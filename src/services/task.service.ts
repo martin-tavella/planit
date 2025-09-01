@@ -1,5 +1,12 @@
-import { Task } from "@/types/task";
+import { Task, TaskPriority } from "@/types/task";
 import api from "./api";
+
+interface CreateTaskData {
+    title: string;
+    description?: string;
+    priority: TaskPriority;
+    deadline?: string | Date;
+}
 
 export const getTasksService = async (): Promise<Task[]> => {
   const res = await api.get<Task[]>("/tasks");
@@ -7,8 +14,10 @@ export const getTasksService = async (): Promise<Task[]> => {
 };
 
 export const createTaskService = async (
-  taskData: Omit<Task, "id" | "createdAt" | "updatedAt" | "userId" | "status">
+  taskData: CreateTaskData
 ): Promise<Task> => {
+  console.log(taskData);
+  taskData.deadline = taskData.deadline ? new Date(taskData.deadline) : undefined;
   const res = await api.post('/tasks/create', taskData);
   console.log(res);
   return res.data;

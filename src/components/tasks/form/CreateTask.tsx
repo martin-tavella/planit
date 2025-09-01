@@ -57,7 +57,7 @@ const CreateTaskForm = () => {
             const updatedForm = { ...formData };
             if (updatedForm.deadline === "") {
               updatedForm.deadline = undefined;
-            }
+            } 
             await createTask({
               ...updatedForm,
             });
