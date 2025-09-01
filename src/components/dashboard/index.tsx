@@ -75,29 +75,6 @@ export default function DashboardActions() {
 
   return (
     <div className="min-h-full pt-30 bg-gradient-to-br from-gray-50 via-purple-50/30 to-indigo-50/20 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 25% 25%, #a98af7 2px, transparent 2px),
-                           radial-gradient(circle at 75% 75%, #c4b5fd 1px, transparent 1px)`,
-            backgroundSize: "50px 50px",
-          }}
-        />
-      </div>
-
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-[#a98af7]/10 rounded-full blur-xl animate-pulse" />
-      <div
-        className="absolute bottom-20 right-10 w-40 h-40 bg-[#c4b5fd]/10 rounded-full blur-xl animate-pulse"
-        style={{ animationDelay: "1s" }}
-      />
-      <div
-        className="absolute top-1/2 left-1/4 w-24 h-24 bg-[#1d0c37]/5 rounded-full blur-lg animate-pulse"
-        style={{ animationDelay: "2s" }}
-      />
-
         {/* Welcome Section */}
         <div className=" backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 py-8 px-30 xl:px-68 text-center">
           <div>
@@ -109,24 +86,6 @@ export default function DashboardActions() {
             </p>
           </div>
         </div>
-
-        {/* Quick Stats */}
-        {/* <div className="flex flex-row justify-center gap-20 mx-auto max-w-2/3 border-2 mr-25 border-violet-300 rounded-lg">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="bg-white/50 rounded-xl p-4 text-center border border-[#a98af7]/10"
-            >
-              <div className="flex items-center justify-center mb-2 text-[#a98af7]">
-                {stat.icon}
-              </div>
-              <div className="text-2xl font-bold text-[#1d0c37]">
-                {stat.value}
-              </div>
-              <div className="text-sm text-gray-600">{stat.label}</div>
-            </div>
-          ))}
-        </div> */}
 
       {/* Quick Actions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-3">
