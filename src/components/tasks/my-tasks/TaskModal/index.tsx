@@ -17,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Task } from "@/types/task";
+import { Task, TaskStatus } from "@/types/task";
 import getStatusStyles from "./utils/getStatusStyles";
 import getPriorityStyles from "./utils/getPriorityStyles";
 
@@ -25,7 +25,7 @@ interface TaskModalProps {
   task: Task;
   onClose: () => void;
   onDelete: (taskId: number) => void;
-  onStatusChange: (taskId: number, newStatus: Task["status"]) => void;
+  onStatusChange: (taskId: number, newStatus: TaskStatus) => void;
 }
 
 export default function TaskModal({
@@ -196,7 +196,7 @@ export default function TaskModal({
                   <DropdownMenuItem
                     key={option.value}
                     onClick={() =>
-                      onStatusChange(task.id, option.value as Task["status"])
+                      onStatusChange(task.id, option.value as TaskStatus)
                     }
                     className="hover:bg-[#a98af7]/10 focus:bg-[#a98af7]/10 flex items-center space-x-2"
                   >

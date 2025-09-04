@@ -7,12 +7,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../../ui/button";
 import { ChevronDown, Filter } from "lucide-react";
+import { TaskPriority, TaskStatus } from "@/types/task";
 
 interface FilterOptionProps {
   priority?: string;
-  setPriority?: (value: string) => void;
+  setPriority?: (value: TaskPriority | "any") => void;
   status?: string;
-  setStatus?: (value: string) => void;
+  setStatus?: (value: TaskStatus | "all") => void;
 }
 
 const FilterOption = ({
@@ -21,10 +22,10 @@ const FilterOption = ({
   status,
   setStatus,
 }: FilterOptionProps) => {
-  const priorityOptions = [
+  const priorityOptions: {value: TaskPriority | "any"; label: string}[] = [
     { value: "any", label: "Any Priority" },
     { value: "low", label: "Low" },
-    { value: "mid", label: "Medium" },
+    { value: "medium", label: "Medium" },
     { value: "high", label: "High" },
   ];
 

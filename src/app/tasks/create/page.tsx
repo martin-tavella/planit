@@ -1,4 +1,4 @@
-import CreateTaskForm from "@/components/tasks/form/CreateTask";
+import CreateTaskForm from "@/components/tasks/CreateTask";
 
 const CreateTaskPage = () => {
     return <CreateTaskForm />

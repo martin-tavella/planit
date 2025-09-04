@@ -11,17 +11,27 @@ import { Button } from "../../ui/button";
 import { Search, ChevronDown, Filter, SortAsc, SortDesc } from "lucide-react";
 import FilterOption from "./FilterOption";
 import { useRouter, useSearchParams } from "next/navigation";
-import TaskModal from "../TaskModal";
-import { Task, TaskStatus } from "@/types/task";
+import TaskModal from "./TaskModal";
+import { Task, TaskPriority, TaskStatus } from "@/types/task";
 import TaskListItem from "./TaskListItem";
 
 const TasksList = () => {
-  const { fetchTasks, deleteTask, updateTask, tasks, loading, error } = useTasks();
+  const {
+    fetchTasks,
+    deleteTask,
+    updateTask,
+    tasks,
+    loading,
+    error,
+    pages,
+    currentPage,
+    setCurrentPage,
+  } = useTasks();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [priority, setPriority] = useState("any");
-  const [status, setStatus] = useState("all");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [priority, setPriority] = useState<TaskPriority | "any">("any");
+  const [status, setStatus] = useState<TaskStatus | "all">("all");
+  const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("DESC");
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [modalTask, setModalTask] = useState<Task | null>(null);
@@ -47,6 +57,10 @@ const TasksList = () => {
       setMessage(error);
     }
   }, [error, fetchTasks, searchParams, tasks]);
+
+  useEffect(() => {
+    fetchTasks(currentPage, undefined, priority, status, sortOrder, searchTerm);
+  }, [priority, status, sortOrder, searchTerm, pages, currentPage]);
 
   const handleDeleteTask = (taskId: number) => {
     deleteTask(taskId);
@@ -83,17 +97,17 @@ const TasksList = () => {
               {/* Sort Button */}
               <Button
                 onClick={() =>
-                  setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                  setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC")
                 }
                 variant="outline"
                 className="bg-white/90 border-[#a98af7]/30 text-[#1d0c37] hover:bg-[#a98af7]/10 hover:border-[#a98af7] transition-all duration-300"
               >
-                {sortOrder === "asc" ? (
+                {sortOrder === "ASC" ? (
                   <SortAsc className="w-4 h-4 mr-2" />
                 ) : (
                   <SortDesc className="w-4 h-4 mr-2" />
                 )}
-                Sort: {sortOrder === "asc" ? "Ascending" : "Descending"}
+                Sort: {sortOrder === "ASC" ? "Ascending" : "Descending"}
               </Button>
 
               {/* Search Bar */}
@@ -114,12 +128,13 @@ const TasksList = () => {
         {/* Tasks Content */}
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 min-h-[400px]">
-            {loading ? (
+            {loading && (
               <div className="flex justify-center items-center h-32">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#a98af7]"></div>
                 <span className="ml-3 text-[#1d0c37]">Loading...</span>
               </div>
-            ) : (
+            )}
+            {!loading && tasks.length > 0 && !error && (
               <div className="space-y-3">
                 {tasks.map((task) => (
                   <TaskListItem
@@ -129,6 +144,9 @@ const TasksList = () => {
                   />
                 ))}
               </div>
+            )}
+            {!loading && !tasks.length && error && (
+              <p className="text-center text-[#1d0c37]">{error}</p>
             )}
           </div>
           {modalTask && (
