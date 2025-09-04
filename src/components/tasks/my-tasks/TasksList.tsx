@@ -11,12 +11,12 @@ import { Button } from "../../ui/button";
 import { Search, ChevronDown, Filter, SortAsc, SortDesc } from "lucide-react";
 import FilterOption from "./FilterOption";
 import { useRouter, useSearchParams } from "next/navigation";
-import TaskModal from "./TaskModal";
-import { Task } from "@/types/task";
+import TaskModal from "../TaskModal";
+import { Task, TaskStatus } from "@/types/task";
 import TaskListItem from "./TaskListItem";
 
 const TasksList = () => {
-  const { fetchTasks, tasks, loading, error } = useTasks();
+  const { fetchTasks, deleteTask, updateTask, tasks, loading, error } = useTasks();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [priority, setPriority] = useState("any");
@@ -49,11 +49,13 @@ const TasksList = () => {
   }, [error, fetchTasks, searchParams, tasks]);
 
   const handleDeleteTask = (taskId: number) => {
-    console.log("proximamente");
+    deleteTask(taskId);
+    setModalTask(null);
+    changeParams();
   };
 
-  const handleStatusChange = (taskId: number) => {
-    console.log("proximamente");
+  const handleStatusChange = (taskId: number, newStatus: TaskStatus) => {
+    updateTask(taskId, { status: newStatus });
   };
 
   return (

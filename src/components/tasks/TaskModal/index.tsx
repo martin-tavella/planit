@@ -18,6 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Task } from "@/types/task";
+import getStatusStyles from "./utils/getStatusStyles";
+import getPriorityStyles from "./utils/getPriorityStyles";
 
 interface TaskModalProps {
   task: Task;
@@ -32,72 +34,7 @@ export default function TaskModal({
   onDelete,
   onStatusChange,
 }: TaskModalProps) {
-  const getPriorityStyles = (priority: string) => {
-    switch (priority) {
-      case "high":
-        return {
-          bg: "bg-red-100",
-          text: "text-red-800",
-          border: "border-red-200",
-          dot: "bg-red-500",
-        };
-      case "mid":
-        return {
-          bg: "bg-yellow-100",
-          text: "text-yellow-800",
-          border: "border-yellow-200",
-          dot: "bg-yellow-500",
-        };
-      case "low":
-        return {
-          bg: "bg-green-100",
-          text: "text-green-800",
-          border: "border-green-200",
-          dot: "bg-green-500",
-        };
-      default:
-        return {
-          bg: "bg-gray-100",
-          text: "text-gray-800",
-          border: "border-gray-200",
-          dot: "bg-gray-500",
-        };
-    }
-  };
-
-  const getStatusStyles = (status: string) => {
-    switch (status) {
-      case "completed":
-        return {
-          bg: "bg-green-100",
-          text: "text-green-800",
-          border: "border-green-200",
-          icon: <CheckCircle className="w-4 h-4" />,
-        };
-      case "in-progress":
-        return {
-          bg: "bg-blue-100",
-          text: "text-blue-800",
-          border: "border-blue-200",
-          icon: <Clock className="w-4 h-4" />,
-        };
-      case "pending":
-        return {
-          bg: "bg-gray-100",
-          text: "text-gray-800",
-          border: "border-gray-200",
-          icon: <Circle className="w-4 h-4" />,
-        };
-      default:
-        return {
-          bg: "bg-gray-100",
-          text: "text-gray-800",
-          border: "border-gray-200",
-          icon: <Circle className="w-4 h-4" />,
-        };
-    }
-  };
-
+ 
   const priorityStyles = getPriorityStyles(task.priority);
   const statusStyles = getStatusStyles(task.status!);
 
@@ -217,7 +154,7 @@ export default function TaskModal({
             </h3>
             <div className="bg-[#a98af7]/5 rounded-xl p-4 border border-[#a98af7]/20">
               <p className="text-[#1d0c37] font-medium">
-                {formatDeadline(task.deadline)}
+                {formatDeadline(task.deadline!)}
               </p>
             </div>
           </div>
