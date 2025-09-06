@@ -20,6 +20,8 @@ interface TasksContextType {
   tasks: Task[];
   loading: boolean;
   error: string | null;
+  pages: number;
+  currentPage: number;
   fetchTasks: (
     page?: number,
     limit?: number,
