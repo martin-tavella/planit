@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root { 
+    --fc-border-color: #a98af7 !important;
+}
+
+.fc-toolbar-title {
+    color:#241040 !important;
+    @apply font-semibold;
+}
+
+.fc-button {
+    background-color: #241040 !important;
+    color:  #a98af7 !important;
+}

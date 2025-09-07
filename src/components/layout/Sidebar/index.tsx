@@ -86,7 +86,7 @@ const Sidebar = () => {
       <aside className={`
         fixed inset-y-0 left-0 top-24  z-50
         bg-gradient-to-b from-[#1d0c37] to-[#2a1548] 
-        border-r border-[#a98af7]/20
+        border-r border-[#a98af7]/20 
         transition-all duration-300 ease-in-out
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         ${isCollapsed ? 'lg:w-30' : 'lg:w-72'}
