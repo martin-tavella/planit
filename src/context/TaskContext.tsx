@@ -64,7 +64,6 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         sort,
         search
       )
-      console.log(res)
       setTasks(res.tasks);
       setPages(res.totalPages);
       setCurrentPage(res.page);
@@ -134,6 +133,8 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         tasks,
         loading,
         error,
+        pages,
+        currentPage,
         fetchTasks,
         createTask,
         updateTask,

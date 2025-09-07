@@ -14,6 +14,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import TaskModal from "./TaskModal";
 import { Task, TaskPriority, TaskStatus } from "@/types/task";
 import TaskListItem from "./TaskListItem";
+import PaginateTasks from "./TaskModal/utils/PaginateTasks";
 
 const TasksList = () => {
   const {
@@ -57,6 +58,10 @@ const TasksList = () => {
       setMessage(error);
     }
   }, [error, fetchTasks, searchParams, tasks]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   useEffect(() => {
     fetchTasks(currentPage, undefined, priority, status, sortOrder, searchTerm);
@@ -143,6 +148,7 @@ const TasksList = () => {
                     onClick={changeParams}
                   />
                 ))}
+                <PaginateTasks pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
               </div>
             )}
             {!loading && !tasks.length && error && (
