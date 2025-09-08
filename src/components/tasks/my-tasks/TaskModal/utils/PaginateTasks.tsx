@@ -7,7 +7,6 @@ const PaginateTasks = ({
     currentPage: number;
     setCurrentPage: (n: number) => void;
 }) => {
-    console.log(pages)
     return (
         <div className="flex justify-center mt-6 space-x-2">
             {Array.from({ length: pages }, (_, i) => (

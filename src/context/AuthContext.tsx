@@ -43,7 +43,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const checkTokenExpiration = (): boolean => {
         if (token && user) {
-            console.log(user, token)
             if (user.exp < new Date().getTime() / 1000) {
                 logout();
                 return true

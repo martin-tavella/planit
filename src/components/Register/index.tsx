@@ -65,7 +65,6 @@ const Register = () => {
       password: formData.password,
       confirmPassword: formData.confirmPassword,
     });
-    console.log(res)
     if (res.error) {
       setIsLoading(false);
       setErrors((prev) => ({

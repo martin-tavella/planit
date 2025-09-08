@@ -34,7 +34,6 @@ const TasksList = () => {
   const [status, setStatus] = useState<TaskStatus | "all">("all");
   const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("DESC");
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState<string | null>(null);
   const [modalTask, setModalTask] = useState<Task | null>(null);
 
   const changeParams = (taskId?: number) => {
@@ -54,9 +53,6 @@ const TasksList = () => {
     } else {
       setModalTask(null);
     }
-    if (error) {
-      setMessage(error);
-    }
   }, [error, fetchTasks, searchParams, tasks]);
 
   useEffect(() => {
@@ -64,7 +60,13 @@ const TasksList = () => {
   }, []);
 
   useEffect(() => {
-    fetchTasks(currentPage, undefined, priority, status, sortOrder, searchTerm);
+    fetchTasks({
+      page: currentPage, 
+      priority, 
+      status, 
+      sort: sortOrder, 
+      search: searchTerm
+    });
   }, [priority, status, sortOrder, searchTerm, pages, currentPage]);
 
   const handleDeleteTask = (taskId: number) => {

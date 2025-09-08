@@ -8,6 +8,15 @@ interface CreateTaskData {
   deadline?: string | Date;
 }
 
+interface getTasksFilters {
+  page?: number;
+  limit?: number;
+  priority?: TaskPriority | "any";
+  status?: TaskStatus | "all";
+  sort?: 'ASC' | 'DESC';
+  search?: string;
+}
+
 interface getTasksResponse {
   tasks: Task[];
   total: number;
@@ -17,13 +26,9 @@ interface getTasksResponse {
 }
 
 export const getTasksService = async (
-  page?: number,
-  limit?: number,
-  priority?: TaskPriority | "any",
-  status?: TaskStatus | "all",
-  sort?: 'ASC' | 'DESC',
-  search?: string,
+  filters: getTasksFilters
 ): Promise<getTasksResponse> => {
+  const { page, limit, priority, status, sort, search } = filters;
   const queries = new URLSearchParams();
   if (page) queries.append("page", page.toString());
   if (limit) queries.append("limit", limit.toString());
