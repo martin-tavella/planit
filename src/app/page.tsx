@@ -1,9 +1,11 @@
+import Home from "@/components/Home";
 import Navbar from "@/components/layout/Navbar";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
     <Navbar />
-    <p>home</p></>
+    <Home />
+    </>
   );
 }
